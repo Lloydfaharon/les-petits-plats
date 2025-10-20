@@ -1,0 +1,92 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+  gap: 3rem;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.imageContainer {
+  flex: 1 1 400px;
+  max-width: 500px;
+}
+
+.image {
+  border-radius: 16px;
+  
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+}
+
+.details {
+  flex: 1 1 500px;
+  max-width: 600px;
+}
+
+.title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.section {
+  margin-top: 1.5rem;
+}
+.section h2{
+  font-family: 'Anton';
+  margin-bottom: 25px;
+  text-transform: uppercase;
+}
+.section h3{
+  font-family: 'manrope';
+   margin-bottom: 15px;
+}
+.sectionp{
+    margin-bottom: 15px;
+
+}
+
+
+.badge {
+  background-color: #facc15;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  gap: 0.5rem 2rem;
+}
+
+.gray {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.recipeText {
+  margin-left: 1rem;
+  padding-left: 1rem;
+  list-style-position: outside;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .imageContainer,
+  .details {
+    max-width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

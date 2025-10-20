@@ -1,103 +1,151 @@
-import Image from "next/image";
+"use client";
+
+import RecipeCard from "@/components/RecipeCard/RecipeCard";
+import recipeData from "@/data/recipes.json";
+import FilterDropdown from "@/components/FilterDropdown/FilterDropdown";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation"; // 🔹 AJOUT
+import styles from "@/app/page.module.css";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter(); // 🔹 AJOUT
+  const searchParams = useSearchParams(); // 🔹 AJOUT
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  // --- Initialisation depuis l'URL ---
+  const [filters, setFilters] = useState({
+    Ingrédients: searchParams.get("ingredients")?.split(",") || [],
+    Appareils: searchParams.get("appareils")?.split(",") || [],
+    Ustensiles: searchParams.get("ustensiles")?.split(",") || [],
+  });
+
+  // --- Sync URL quand les filtres changent ---
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (filters.Ingrédients.length > 0)
+      params.set("ingredients", filters.Ingrédients.join(","));
+    if (filters.Appareils.length > 0)
+      params.set("appareils", filters.Appareils.join(","));
+    if (filters.Ustensiles.length > 0)
+      params.set("ustensiles", filters.Ustensiles.join(","));
+
+    router.replace(`?${params.toString()}`);
+  }, [filters, router]);
+
+  // --- Générer les listes uniques ---
+  const allIngredients = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          recipeData.flatMap((r) =>
+            r.ingredients.map((i) => i.ingredient.toLowerCase())
+          )
+        )
+      ),
+    []
+  );
+
+  const allAppliances = useMemo(
+    () => Array.from(new Set(recipeData.map((r) => r.appliance.toLowerCase()))),
+    []
+  );
+
+  const allUstensils = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          recipeData.flatMap((r) => r.ustensils.map((u) => u.toLowerCase()))
+        )
+      ),
+    []
+  );
+
+  // --- Gestion des filtres ---
+  const toggleFilter = (category: keyof typeof filters, item: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [category]: prev[category].includes(item)
+        ? prev[category].filter((f) => f !== item)
+        : [...prev[category], item],
+    }));
+  };
+
+  // --- Filtrage des recettes ---
+  const filteredRecipes = recipeData.filter((recipe) => {
+    const matchIngredients =
+      filters.Ingrédients.length === 0 ||
+      filters.Ingrédients.every((ing) =>
+        recipe.ingredients.some(
+          (rIng) => rIng.ingredient.toLowerCase() === ing.toLowerCase()
+        )
+      );
+
+    const matchAppliances =
+      filters.Appareils.length === 0 ||
+      filters.Appareils.includes(recipe.appliance.toLowerCase());
+
+    const matchUstensils =
+      filters.Ustensiles.length === 0 ||
+      filters.Ustensiles.every((ust) =>
+        recipe.ustensils.map((u) => u.toLowerCase()).includes(ust.toLowerCase())
+      );
+    
+
+    return matchIngredients && matchAppliances && matchUstensils;
+  });
+
+  // --- Gestion du count ---
+  const recipeCount = filteredRecipes.length;
+
+  // --- Rendu ---
+  return (
+    <main className="min-h-screen flex flex-col items-center bg-gray-100 p-8">
+      {/* Filtres */}
+      <div className={styles.mainfilter}>
+        <div className={styles.boxfilter}>
+          <div>
+            <FilterDropdown
+              title="Ingrédients"
+              options={allIngredients}
+              selected={filters.Ingrédients}
+              onSelect={(item) => toggleFilter("Ingrédients", item)}
+              onRemove={(item) => toggleFilter("Ingrédients", item)}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+
+          <div>
+            <FilterDropdown
+              title="Appareils"
+              options={allAppliances}
+              selected={filters.Appareils}
+              onSelect={(item) => toggleFilter("Appareils", item)}
+              onRemove={(item) => toggleFilter("Appareils", item)}
+            />
+          </div>
+          <div>
+            <FilterDropdown
+              title="Ustensiles"
+              options={allUstensils}
+              selected={filters.Ustensiles}
+              onSelect={(item) => toggleFilter("Ustensiles", item)}
+              onRemove={(item) => toggleFilter("Ustensiles", item)}
+            />
+          </div>
+
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <div className={styles.count}>
+          <p>{recipeCount} recette{recipeCount > 1 ? "s" : ""} </p>
+        </div>
+      </div>
+
+      {/* Cartes de recettes */}
+      <div className={styles.mainpad}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {filteredRecipes.map((recipe) => (
+            <RecipeCard key={recipe.id} recipe={recipe} />
+          ))}
+        </div>
+      </div>
+    </main>
   );
 }
