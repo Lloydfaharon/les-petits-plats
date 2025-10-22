@@ -1,17 +1,29 @@
 "use client";
-
+import { notFound } from 'next/navigation';
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-export default function Header() {
+// ✅ On ajoute juste ce type de props
+type HeaderProps = {
+  onSearchChange?: (value: string) => void;
+  isRecipePage?: boolean;
+  isNotFoundPage?: boolean;
+};
+
+export default function Header({ onSearchChange  }: HeaderProps) {
   const pathname = usePathname();
   const isRecipePage = pathname.startsWith("/recette/");
+  const isNotFoundPage = pathname === "/not-found"; 
 
   return (
-    <div className={`header ${isRecipePage ? "header--small" : ""}`}>
+    <div
+      className={`header ${
+        isRecipePage ? "header--small" : isNotFoundPage ? "header--full" : ""
+      }`}
+    >
       {/* Titre + Logo */}
-      <Link href ='/'>
+      <Link href="/">
         <div className="logo text-white text-2xl flex flex-row ">
           <h1 className="flex justify-center items-center text-white">
             Les petits plats
@@ -48,56 +60,6 @@ export default function Header() {
           </h1>
         </div>
       </Link>
-
-      {/* Recherche uniquement visible sur la page d'accueil */}
-      {!isRecipePage && (
-        <div className="research">
-          <h2 className="text-amber-300 text-center">
-            DÉCOUVREZ NOS RECETTES <br />
-            DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
-          </h2>
-
-          <div className="mt-8 flex w-[954px] justify-center">
-            <div className="text-[15px] w-full flex p-2 rounded-lg overflow-hidden shadow-lg bg-white">
-              <input
-                type="text"
-                placeholder="Rechercher une recette, un ingrédient, ..."
-                className="h-11 flex-grow px-4 py-3 text-black placeholder-gray-500 focus:outline-none"
-              />
-              <button className="btn group" aria-label="rechercher">
-                <svg
-                  width="49"
-                  height="49"
-                  viewBox="0 0 51 53"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    y="0.421875"
-                    width="51"
-                    height="52"
-                    rx="10"
-                    className="group-hover:fill-yellow-400 fill-black transition"
-                  />
-                  <circle
-                    cx="22"
-                    cy="22.4219"
-                    r="9.5"
-                    className="group-hover:stroke-black stroke-white transition"
-                  />
-                  <line
-                    x1="30.3536"
-                    y1="31.0683"
-                    x2="39.3536"
-                    y2="40.0683"
-                    className="group-hover:stroke-black stroke-white transition"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
