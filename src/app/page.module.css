@@ -58,13 +58,12 @@
 .dropdownContainer {
   position: relative;
   width: 200px;
+ 
 }
 
 /* Conteneur du bouton avec bordures conditionnelles */
 .dropdownWrapper {
   background: white;
-  
- 
 }
 
 .dropdownWrapper.closed {
@@ -72,7 +71,7 @@
 }
 
 .dropdownWrapper.open {
-  border-radius: 8px 8px 0 0;
+  border-radius: 11px 11px 11px 11px;
   border-bottom: none;
   
 }
@@ -109,10 +108,9 @@
   width: 100%;
   background: white;
   border-radius: 0 0 11px 11px;
- 
-  
   border-top: none;
-  padding: 8px;
+  overflow: hidden;
+  /*padding: 8px;*/
   /* SUPPRIMEZ ces lignes : */
   /* position: absolute; */
   /* z-index: 20; */
@@ -124,7 +122,7 @@
   background: white;
   border-radius: 4px;
   padding: 8px 12px;
-  margin-bottom: 8px;
+  margin: 15px;
   border: 1px solid #d1d5db;
   height: 36px;
 }
@@ -137,7 +135,8 @@
   border: none;
   outline: none;
   width: 10px;
-  height: 5px;
+  height: 20px;
+  padding: 0;
 }
 
 .searchIcon,
@@ -164,22 +163,25 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  
 }
 
 .optionItem {
   cursor: pointer;
   padding: 8px 12px;
-  border-radius: 4px;
   color: #1f2937;
+  
 }
 
 .optionItem:hover {
-  background: #f3f4f6;
+  background: #fde047;
+  
 }
 
 .optionItem.selected {
   background: #fde047;
   color: #111827;
+  
 }
 
 .noResults {
@@ -202,7 +204,7 @@
   color: #111827;
   font-weight: 400;
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 14px;
 }
 
