@@ -1,16 +1,42 @@
-// src/components/SearchBar/SearchBar.tsx
 "use client";
 
-import { ChangeEvent } from "react";
+import { useState, useEffect, useCallback } from "react";
+import debounce from "lodash.debounce";
 
 type SearchBarProps = {
   onChange: (value: string) => void;
 };
 
 export default function SearchBar({ onChange }: SearchBarProps) {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+  const [inputValue, setInputValue] = useState<string>("");
+
+  //  Débounce avec useCallback (plus sûr)
+  const debouncedChange = useCallback(
+    debounce((value: string) => {
+      onChange(value);
+    }, 300),
+    []
+  );
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+    debouncedChange(value);
   };
+
+  const clearSearch = () => {
+    setInputValue("");     // ← Vide le champ immédiatement
+    debouncedChange.cancel(); // ← Annule tout debounce en cours
+    onChange("");          // ← Met à jour immédiatement aussi
+  };
+
+  //  Nettoyage à la destruction du composant
+  useEffect(() => {
+    return () => {
+      debouncedChange.cancel();
+    };
+  }, [debouncedChange]);
+
 
   return (
     <div className="research">
@@ -22,11 +48,21 @@ export default function SearchBar({ onChange }: SearchBarProps) {
       <div className="mt-8 flex w-[954px] justify-center">
         <div className="text-[15px] w-full flex p-2 rounded-lg overflow-hidden shadow-lg bg-white">
           <input
+            value={inputValue} 
             type="text"
             placeholder="Rechercher une recette, un ingrédient, ..."
             className="h-11 flex-grow px-4 py-3 text-black placeholder-gray-500 focus:outline-none"
             onChange={handleChange}
           />
+             {inputValue && (
+            <button
+              onClick={clearSearch}
+              className="  text-gray-500 hover:text-gray-800"
+              aria-label="Effacer la recherche"
+            >
+              &#10005;
+            </button>
+          )}
           <button className="btn group" aria-label="rechercher">
             <svg
               width="49"

@@ -137,7 +137,7 @@ export default function Home() {
   // --- Rendu ---
   return (
     <main className=" relative min-h-screen flex flex-col items-center bg-gray-100 p-8">
-      {/* ✅ Message de recherche 
+      {/*  Message de recherche 
       {searchQuery.length > 0 && (
         <div style={{ marginBottom: "20px", textAlign: "center" }}>
           {searchQuery.length < 3 ? (

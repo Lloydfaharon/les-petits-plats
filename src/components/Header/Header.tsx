@@ -1,23 +1,21 @@
 "use client";
-import { notFound } from 'next/navigation';
+
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-// ✅ On ajoute juste ce type de props
+
 type HeaderProps = {
   onSearchChange?: (value: string) => void;
-  isRecipePage?: boolean;
-  isNotFoundPage?: boolean;
 };
 
-export default function Header({ onSearchChange  }: HeaderProps) {
+export default function Header({ onSearchChange }: HeaderProps) {
   const pathname = usePathname();
   const isRecipePage = pathname.startsWith("/recette/");
   const isNotFoundPage = pathname === "/not-found"; 
 
   return (
-    <div
+    <header
       className={`header ${
         isRecipePage ? "header--small" : isNotFoundPage ? "header--full" : ""
       }`}
@@ -60,6 +58,6 @@ export default function Header({ onSearchChange  }: HeaderProps) {
           </h1>
         </div>
       </Link>
-    </div>
+    </header>
   );
 }
