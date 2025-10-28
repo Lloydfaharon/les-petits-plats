@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "@/app/page.module.css";
 import SearchBar from "@/components/SearchBar/SearchBar";
+import Header from "@/components/Header/Header";
 
 type PageProps = {
   searchQuery?: string;
@@ -136,7 +137,11 @@ export default function Home() {
 
   // --- Rendu ---
   return (
+    <>
+    <Header/>
+    
     <main className=" relative min-h-screen flex flex-col items-center bg-gray-100 p-8">
+      
       {/*  Message de recherche 
       {searchQuery.length > 0 && (
         <div style={{ marginBottom: "20px", textAlign: "center" }}>
@@ -228,5 +233,6 @@ export default function Home() {
         </div>
       </div>
     </main>
+    </>
   );
 }

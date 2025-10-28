@@ -2,6 +2,7 @@ import recipeData from "@/data/recipes.json";
 import RecipeDetails from "@/components/RecipeDetail/RecipesDetail";
 import { notFound } from "next/navigation";
 import { Recipe } from "@/components/RecipeDetail/RecipesDetail"; // Assure-toi que ce fichier existe
+import Header from "@/components/Header/Header";
 
 // Génère les chemins statiques : /recette/slug
 export function generateStaticParams() {
@@ -23,7 +24,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  return <RecipeDetails recipe={recipe} />;
+  return <>
+  <Header/>
+  <RecipeDetails recipe={recipe} />
+  </>
 }
 
 

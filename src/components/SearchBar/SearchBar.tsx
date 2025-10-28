@@ -45,7 +45,7 @@ export default function SearchBar({ onChange }: SearchBarProps) {
         DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES
       </h2>
 
-      <div className="mt-8 flex w-[954px] justify-center">
+      <div className="mt-8 flex w-[380px] md:w-[954px] justify-center">
         <div className="text-[15px] w-full flex p-2 rounded-lg overflow-hidden shadow-lg bg-white">
           <input
             value={inputValue} 
