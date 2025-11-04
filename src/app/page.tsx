@@ -141,25 +141,6 @@ export default function Home() {
     <Header/>
     
     <main className=" relative min-h-screen flex flex-col items-center bg-gray-100 p-8">
-      
-      {/*  Message de recherche 
-      {searchQuery.length > 0 && (
-        <div style={{ marginBottom: "20px", textAlign: "center" }}>
-          {searchQuery.length < 3 ? (
-            <p style={{ color: "#f59e0b", fontWeight: 500, fontSize: "14px" }}>
-              ⚠️ Entrez au moins 3 caractères pour lancer la recherche (
-              {3 - searchQuery.length} restant
-              {3 - searchQuery.length > 1 ? "s" : ""})
-            </p>
-          ) : (
-            <p style={{ color: "#059669", fontWeight: 500, fontSize: "14px" }}>
-              ✓ Recherche active : "{searchQuery}" –{" "}
-              {searchFilteredRecipes.length} recette
-              {searchFilteredRecipes.length > 1 ? "s" : ""} trouvée
-            </p>
-          )}
-        </div>
-      )}*/}
 
       {/* Filtres */}
       <div className={styles.searchbox} >
@@ -205,24 +186,6 @@ export default function Home() {
           </p>
         </div>
       </div>
-
-      {/* Aucune recette trouvée 
-      {filteredRecipes.length === 0 && searchQuery.length >= 3 && (
-        <div
-          style={{
-            marginTop: "20px",
-            padding: "20px",
-            background: "#fef2f2",
-            border: "1px solid #fecaca",
-            borderRadius: "8px",
-            color: "#991b1b",
-            textAlign: "center",
-            fontSize: "14px",
-          }}
-        >
-          Aucune recette ne correspond à votre recherche "{searchQuery}".
-        </div>
-      )}*/}
 
       {/* Cartes de recettes */}
       <div className={styles.mainpad}>

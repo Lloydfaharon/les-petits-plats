@@ -10,7 +10,7 @@ type SearchBarProps = {
 export default function SearchBar({ onChange }: SearchBarProps) {
   const [inputValue, setInputValue] = useState<string>("");
 
-  //  Débounce avec useCallback (plus sûr)
+  //  Débounce avec useCallback 
   const debouncedChange = useCallback(
     debounce((value: string) => {
       onChange(value);
@@ -25,9 +25,9 @@ export default function SearchBar({ onChange }: SearchBarProps) {
   };
 
   const clearSearch = () => {
-    setInputValue("");     // ← Vide le champ immédiatement
-    debouncedChange.cancel(); // ← Annule tout debounce en cours
-    onChange("");          // ← Met à jour immédiatement aussi
+    setInputValue("");     
+    debouncedChange.cancel(); 
+    onChange("");          
   };
 
   //  Nettoyage à la destruction du composant

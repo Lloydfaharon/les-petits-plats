@@ -15,11 +15,11 @@
   position: relative;
 } 
 .header--small {
-  height: 128px; /* ou la hauteur que tu veux sur page recette */
+  height: 128px; 
 }
 
 .header--full {
-  height:100vh; /* ou la hauteur que tu veux sur page recette */
+  height:100vh; 
 }
 
 .research {

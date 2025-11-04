@@ -37,7 +37,7 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
         </div>
 
         <div className={styles.description}>
-          <h2 className="text-xl font-bold ">{recipe.name}</h2>
+          <h2 className="text-xl font-normal ">{recipe.name}</h2>
 
           <h3 className="uppercase text-gray-500 font-semibold text-sm mb-1">
             Recette
@@ -47,10 +47,10 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
           <h3 className="uppercase text-gray-500 font-semibold text-sm mb-1">
             Ingrédients
           </h3>
-          <div className="grid grid-cols-2 gap-y-5 text-sm">
+          <div className="grid grid-cols-2 gap-y-5  gap-x-5 text-sm">
             {recipe.ingredients.map((item, index) => (
               <div key={index}>
-                <div className="font-semibold">{item.ingredient}</div>
+                <div className="font-normal text-black">{item.ingredient}</div>
                 <div className="text-gray-500">
                   {item.quantity ?? ""} {item.unit ?? ""}
                 </div>
