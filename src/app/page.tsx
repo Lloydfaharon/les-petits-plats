@@ -214,7 +214,7 @@ function HomeContent() {
           </div>
 
           <div className={styles.count}>
-            <p>
+            <p className="count">
               {recipeCount} recette
               {recipeCount > 1 ? "s" : ""}
             </p>
